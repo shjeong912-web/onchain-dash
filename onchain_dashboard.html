@@ -315,7 +315,7 @@ function renderCards(filter){
           '<div class="cell"><div class="lbl">'+(s.dir==='cold'?'적재 상태':'진행')+'</div><div class="v '+s.peakCls+'" style="font-size:12px">'+s.peak+'</div></div>'+
           '<div class="cell"><div class="lbl">체인</div><div class="v" style="color:var(--muted);font-size:12px">ETH</div></div>'+
         '</div>'+
-        '<div class="verify">'+s.verify.map(v=>'<span class="vb '+v[1]+'"><span class="i">'+(v[1]==='ok'?'✓':'⚠')+'</span>'+v[0]+'</span>').join('')+'</div>'+
+        '<div class="verify">'+(Array.isArray(s.verify)?s.verify:[]).map(v=>'<span class="vb '+v[1]+'"><span class="i">'+(v[1]==='ok'?'✓':'⚠')+'</span>'+v[0]+'</span>').join('')+'</div>'+
         '<div class="wallet-flow">'+walletChip(s.flow.from,s.flow.fromType)+'<span class="flow-tag '+s.dir+'">'+s.flow.tag+' ▶</span>'+walletChip(s.flow.to,s.flow.toType)+'<span class="amt">'+s.flow.amt+'</span></div>'+
       '</div>');
   });
