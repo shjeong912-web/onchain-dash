@@ -423,7 +423,7 @@ let PUMPS = MOCK_PUMPS;
 
 async function loadRealData(){
   try{
-    const res = await fetch('dashboard_data.json?t=' + Date.now());
+    const res = await fetch('https://raw.githubusercontent.com/shjeong912-web/onchain-dash/main/dashboard_data.json?t=' + Date.now());
     if(!res.ok) throw new Error('no file');
     const data = await res.json();
     if(data.signals && data.signals.length){
