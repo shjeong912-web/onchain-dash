@@ -291,8 +291,14 @@ function renderCards(filter){
   const el = document.getElementById('cards'); el.innerHTML = '';
   SIGNALS.filter(s => filter==='all' || s.dir===filter).forEach(s=>{
     const showScore = s.dir==='cold' || s.dir==='buy';
-    const phaseHtml = s.phaseAt>=0 ? '<div class="phase">'+s.phase.map((p,i)=>{
-      let c = i<s.phaseAt ? 'done' : i===s.phaseAt ? s.phaseType : '';
+    // phase 배열 없으면 dir별 기본값 (봇 JSON엔 phaseAt만 올 수 있음)
+    const defPhase = s.dir==='sell'
+      ? ['금고닫힘','금고열림','투매']
+      : ['잠복','장전완료','점화'];
+    const phaseArr = Array.isArray(s.phase) ? s.phase : defPhase;
+    const phType = s.phaseType || (s.dir==='sell' ? 'danger' : 'active');
+    const phaseHtml = (s.phaseAt>=0) ? '<div class="phase">'+phaseArr.map((p,i)=>{
+      let c = i<s.phaseAt ? 'done' : i===s.phaseAt ? phType : '';
       return '<div class="step '+c+'">'+p+'</div>';
     }).join('')+'</div>' : '';
     el.insertAdjacentHTML('beforeend',
@@ -417,7 +423,7 @@ let PUMPS = MOCK_PUMPS;
 
 async function loadRealData(){
   try{
-    const res = await fetch('https://raw.githubusercontent.com/shjeong912-web/onchain-dash/main/dashboard_data.json?t=' + Date.now());
+    const res = await fetch('dashboard_data.json?t=' + Date.now());
     if(!res.ok) throw new Error('no file');
     const data = await res.json();
     if(data.signals && data.signals.length){
